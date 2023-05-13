@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- General purpose -->
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="continue_">Continue</string>
+    <string name="restart_required">Need to restart the app</string>
+    <string name="do_not_ask_again">Do not ask again</string>
+    <string name="are_you_sure">Are you sure?</string>
+</resources>
