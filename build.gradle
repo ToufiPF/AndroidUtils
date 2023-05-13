@@ -8,3 +8,21 @@ plugins {
     id 'org.jetbrains.kotlin.android' version '1.8.10' apply false
     id 'com.google.dagger.hilt.android' version "$hilt_version" apply false
 }
+
+task assembleThenMoveAARs(dependsOn: [
+        'AndroidUtils:assembleDebug', 'AndroidUtils:assembleRelease',
+        'AndroidTestUtils:assembleDebug', 'AndroidTestUtils:assembleRelease',
+]) {
+    def destinationFolder = file("${project.buildDir}/aar/")
+    destinationFolder.mkdirs()
+
+    doLast {
+        project.subprojects.forEach { module ->
+            copy {
+                from file("${module.buildDir}/outputs/aar/")
+                include "${module.name}-*.aar"
+                into destinationFolder
+            }
+        }
+    }
+}
