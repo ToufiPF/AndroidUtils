@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory
         android:key="test_category"
         android:persistent="false"
         android:title="Test category" />
+
+    <EditTextPreference
+        android:dialogTitle="EditTextPreference_dialogTitle"
+        android:key="EditTextPreference_key"
+        android:summary="EditTextPreference_summary"
+        android:title="EditTextPreference_title"
+        app:useSimpleSummaryProvider="true" />
+
+    <ch.epfl.toufi.android_utils.ui.preference.InputTypeEditTextPreference
+        android:dialogMessage="InputTypeEditTextPreference_dialogMessage"
+        android:dialogTitle="InputTypeEditTextPreference_dialogTitle"
+        android:inputType="number"
+        android:key="InputTypeEditTextPreference_key"
+        android:summary="InputTypeEditTextPreference_summary"
+        android:title="InputTypeEditTextPreference_title" />
 </PreferenceScreen>

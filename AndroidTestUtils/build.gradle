@@ -19,6 +19,7 @@ android {
 
     buildTypes {
         debug {
+            debuggable true
             minifyEnabled false
         }
         release {
@@ -26,12 +27,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        viewBinding true
+        dataBinding false
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
     }
     testOptions {
         animationsDisabled = true
@@ -39,10 +45,6 @@ android {
             includeAndroidResources = true
             returnDefaultValues = true
         }
-    }
-    buildFeatures {
-        viewBinding true
-        dataBinding false
     }
 }
 
