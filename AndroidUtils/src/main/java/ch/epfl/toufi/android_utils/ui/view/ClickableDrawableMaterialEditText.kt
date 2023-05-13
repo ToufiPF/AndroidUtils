@@ -4,13 +4,16 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.View
 import androidx.core.view.ViewCompat
+import androidx.core.view.ViewCompat.getLayoutDirection
 import ch.epfl.toufi.android_utils.ui.view.ClickableDrawableMaterialEditText.Place.BOTTOM
 import ch.epfl.toufi.android_utils.ui.view.ClickableDrawableMaterialEditText.Place.LEFT
 import ch.epfl.toufi.android_utils.ui.view.ClickableDrawableMaterialEditText.Place.RIGHT
 import ch.epfl.toufi.android_utils.ui.view.ClickableDrawableMaterialEditText.Place.TOP
 import com.google.android.material.R
 import com.google.android.material.textfield.TextInputEditText
+import java.util.EnumMap
 
 class ClickableDrawableMaterialEditText @JvmOverloads constructor(
     context: Context,
@@ -26,36 +29,68 @@ class ClickableDrawableMaterialEditText @JvmOverloads constructor(
     }
 
     @Suppress("PrivatePropertyName")
-    private val START: Int
-        get() = if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) RIGHT.ordinal else LEFT.ordinal
+    private val START: Place
+        get() = if (getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) RIGHT else LEFT
 
     @Suppress("PrivatePropertyName")
-    private val END: Int
-        get() = if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) LEFT.ordinal else RIGHT.ordinal
+    private val END: Place
+        get() = if (getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) LEFT else RIGHT
 
-    private val listeners: Array<OnClickListener?> = Array(4) { null }
+    private val listeners: EnumMap<Place, OnClickListener?> = EnumMap(Place::class.java)
 
-    fun setLeftDrawableClickListener(onClick: OnClickListener) {
-        listeners[LEFT.ordinal] = onClick
+    init {
+        Place.values().forEach { listeners[it] = null }
     }
 
-    fun setTopDrawableClickListener(onClick: OnClickListener) {
-        listeners[TOP.ordinal] = onClick
+    /**
+     * Sets the [View.OnClickListener] on the top drawable.
+     * @param onClick click listener. Set it to null to disable the previous listener.
+     */
+    fun setTopDrawableClickListener(onClick: OnClickListener?) {
+        listeners[TOP] = onClick
     }
 
-    fun setRightDrawableClickListener(onClick: OnClickListener) {
-        listeners[RIGHT.ordinal] = onClick
+    /**
+     * Sets the [View.OnClickListener] on the bottom drawable.
+     * @param onClick click listener. Set it to null to disable the previous listener.
+     */
+    fun setBottomDrawableClickListener(onClick: OnClickListener?) {
+        listeners[BOTTOM] = onClick
     }
 
-    fun setBottomDrawableClickListener(onClick: OnClickListener) {
-        listeners[BOTTOM.ordinal] = onClick
+    /**
+     * Sets the [View.OnClickListener] on the left drawable.
+     * Should not be used together with [setStartDrawableClickListener] / [setEndDrawableClickListener].
+     * @param onClick click listener. Set it to null to disable the previous listener.
+     */
+    fun setLeftDrawableClickListener(onClick: OnClickListener?) {
+        listeners[LEFT] = onClick
     }
 
-    fun setStartDrawableClickListener(onClick: OnClickListener) {
+    /**
+     * Sets the [View.OnClickListener] on the right drawable.
+     * Should not be used together with [setStartDrawableClickListener] / [setEndDrawableClickListener].
+     * @param onClick click listener. Set it to null to disable the previous listener.
+     */
+    fun setRightDrawableClickListener(onClick: OnClickListener?) {
+        listeners[RIGHT] = onClick
+    }
+
+    /**
+     * Sets the [View.OnClickListener] on the start drawable (left or right depending on phone locale).
+     * Should not be used together with [setLeftDrawableClickListener] / [setRightDrawableClickListener].
+     * @param onClick click listener. Set it to null to disable the previous listener.
+     */
+    fun setStartDrawableClickListener(onClick: OnClickListener?) {
         listeners[START] = onClick
     }
 
-    fun setEndDrawableClickListener(onClick: OnClickListener) {
+    /**
+     * Sets the [View.OnClickListener] on the end drawable (left or right depending on phone locale).
+     * Should not be used together with [setLeftDrawableClickListener] / [setRightDrawableClickListener].
+     * @param onClick click listener. Set it to null to disable the previous listener.
+     */
+    fun setEndDrawableClickListener(onClick: OnClickListener?) {
         listeners[END] = onClick
     }
 
@@ -67,7 +102,7 @@ class ClickableDrawableMaterialEditText @JvmOverloads constructor(
             val halfHeight = height / 2
 
             compoundDrawables[LEFT.ordinal]?.let { drawable ->
-                listeners[LEFT.ordinal]?.let { listener ->
+                listeners[LEFT]?.let { listener ->
                     if (paddingLeft <= event.x && event.x <= totalPaddingLeft
                         && halfHeight - drawable.bounds.height() <= event.y
                         && event.y <= halfHeight + drawable.bounds.height()
@@ -78,7 +113,7 @@ class ClickableDrawableMaterialEditText @JvmOverloads constructor(
                 }
             }
             compoundDrawables[TOP.ordinal]?.let { drawable ->
-                listeners[TOP.ordinal]?.let { listener ->
+                listeners[TOP]?.let { listener ->
                     if (paddingTop <= event.y && event.y <= totalPaddingTop
                         && halfWidth - drawable.bounds.width() <= event.x
                         && event.x <= halfWidth + drawable.bounds.width()
@@ -89,7 +124,7 @@ class ClickableDrawableMaterialEditText @JvmOverloads constructor(
                 }
             }
             compoundDrawables[RIGHT.ordinal]?.let { drawable ->
-                listeners[RIGHT.ordinal]?.let { listener ->
+                listeners[RIGHT]?.let { listener ->
                     if (width - totalPaddingRight <= event.x && event.x <= width - paddingRight
                         && halfHeight - drawable.bounds.height() <= event.y
                         && event.y <= halfHeight + drawable.bounds.height()
@@ -100,7 +135,7 @@ class ClickableDrawableMaterialEditText @JvmOverloads constructor(
                 }
             }
             compoundDrawables[BOTTOM.ordinal]?.let { drawable ->
-                listeners[BOTTOM.ordinal]?.let { listener ->
+                listeners[BOTTOM]?.let { listener ->
                     if (height - totalPaddingBottom <= event.y && event.y <= height - paddingBottom
                         && halfWidth - drawable.bounds.width() <= event.x
                         && event.x <= halfWidth + drawable.bounds.width()
