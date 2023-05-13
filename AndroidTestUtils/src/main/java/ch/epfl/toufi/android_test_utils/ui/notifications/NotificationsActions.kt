@@ -1,4 +1,4 @@
-package ch.epfl.android_test_utils.ui.notifications
+package ch.epfl.toufi.android_test_utils.ui.notifications
 
 import android.content.Context
 import android.content.Intent

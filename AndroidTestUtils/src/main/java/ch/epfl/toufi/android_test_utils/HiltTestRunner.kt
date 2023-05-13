@@ -1,4 +1,4 @@
-package ch.epfl.android_test_utils
+package ch.epfl.toufi.android_test_utils
 
 import android.app.Application
 import android.content.Context

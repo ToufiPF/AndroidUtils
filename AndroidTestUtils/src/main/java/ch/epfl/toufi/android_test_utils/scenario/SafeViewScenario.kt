@@ -1,4 +1,4 @@
-package ch.epfl.android_test_utils.scenario
+package ch.epfl.toufi.android_test_utils.scenario
 
 import android.content.Context
 import android.os.Bundle
@@ -8,9 +8,13 @@ import android.view.ViewGroup
 import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.matcher.ViewMatchers.withTagValue
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.hamcrest.Matchers.equalTo
 
 /**
  * Use this scenario to wrap a single [View] into a scenario usable in a test.
@@ -19,7 +23,7 @@ class SafeViewScenario<V : View> @PublishedApi internal constructor(
     private val scenario: SafeFragmentScenario<*>
 ) {
     companion object {
-        private const val TEST_TAG = "TESTED_VIEW_TAG"
+        const val TEST_TAG = "TESTED_VIEW_TAG"
 
         /**
          * Launches the view in a regular container, without the hilt wrapper.
@@ -27,7 +31,7 @@ class SafeViewScenario<V : View> @PublishedApi internal constructor(
          * @param testFunction the function executing the tests
          * @see onView to interact directly with the view
          */
-        inline fun <V : View> launchInRegularContainer(
+        inline fun <reified V : View> launchInRegularContainer(
             noinline viewFactory: (Context) -> V,
             testFunction: (SafeViewScenario<V>) -> Unit
         ) = SafeFragmentScenario.launchInRegularContainer(
@@ -45,7 +49,7 @@ class SafeViewScenario<V : View> @PublishedApi internal constructor(
          * @param testFunction the function executing the tests
          * @see onView to interact directly with the view
          */
-        inline fun <V : View> launchInHiltContainer(
+        inline fun <reified V : View> launchInHiltContainer(
             noinline viewFactory: (Context) -> V,
             testFunction: (SafeViewScenario<V>) -> Unit
         ) = SafeFragmentScenario.launchInHiltContainer(
@@ -99,4 +103,10 @@ class SafeViewScenario<V : View> @PublishedApi internal constructor(
             action.invoke(testedView)
         }
     }
+
+    /**
+     * Returns a [ViewInteraction] on the tested view.
+     */
+    fun onTestedView(): ViewInteraction =
+        Espresso.onView(withTagValue(equalTo(TEST_TAG)))
 }

@@ -1,4 +1,4 @@
-package ch.epfl.android_test_utils.ui.view
+package ch.epfl.toufi.android_test_utils.ui.view
 
 import android.view.View
 import android.widget.EditText
@@ -8,13 +8,12 @@ import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.MotionEvents
 import androidx.test.espresso.matcher.ViewMatchers
-import ch.epfl.android_test_utils.ui.view.ClickableDrawableMaterialEditTextTestUtils.CompoundDrawablePlace.BOTTOM
-import ch.epfl.android_test_utils.ui.view.ClickableDrawableMaterialEditTextTestUtils.CompoundDrawablePlace.END
-import ch.epfl.android_test_utils.ui.view.ClickableDrawableMaterialEditTextTestUtils.CompoundDrawablePlace.LEFT
-import ch.epfl.android_test_utils.ui.view.ClickableDrawableMaterialEditTextTestUtils.CompoundDrawablePlace.RIGHT
-import ch.epfl.android_test_utils.ui.view.ClickableDrawableMaterialEditTextTestUtils.CompoundDrawablePlace.START
-import ch.epfl.android_test_utils.ui.view.ClickableDrawableMaterialEditTextTestUtils.CompoundDrawablePlace.TOP
-import ch.epfl.toufi.android_utils.ui.view.ClickableDrawableMaterialEditText
+import ch.epfl.toufi.android_test_utils.ui.view.ClickableDrawableMaterialEditTextTestUtils.CompoundDrawablePlace.BOTTOM
+import ch.epfl.toufi.android_test_utils.ui.view.ClickableDrawableMaterialEditTextTestUtils.CompoundDrawablePlace.END
+import ch.epfl.toufi.android_test_utils.ui.view.ClickableDrawableMaterialEditTextTestUtils.CompoundDrawablePlace.LEFT
+import ch.epfl.toufi.android_test_utils.ui.view.ClickableDrawableMaterialEditTextTestUtils.CompoundDrawablePlace.RIGHT
+import ch.epfl.toufi.android_test_utils.ui.view.ClickableDrawableMaterialEditTextTestUtils.CompoundDrawablePlace.START
+import ch.epfl.toufi.android_test_utils.ui.view.ClickableDrawableMaterialEditTextTestUtils.CompoundDrawablePlace.TOP
 import com.google.android.material.textfield.TextInputEditText
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
@@ -31,7 +30,7 @@ object ClickableDrawableMaterialEditTextTestUtils {
     }
 
     /**
-     * Returns a [ViewAction] that clicks on the desired compound drawable in an [ClickableDrawableMaterialEditText]
+     * Returns a [ViewAction] that clicks on the desired compound drawable in an [EditText]
      */
     fun clickOnCompoundDrawable(where: CompoundDrawablePlace): ViewAction = object : ViewAction {
         override fun perform(uiController: UiController?, view: View?) {

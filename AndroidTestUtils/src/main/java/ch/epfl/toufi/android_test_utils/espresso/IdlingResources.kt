@@ -1,4 +1,4 @@
-package ch.epfl.android_test_utils.espresso
+package ch.epfl.toufi.android_test_utils.espresso
 
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.IdlingResource

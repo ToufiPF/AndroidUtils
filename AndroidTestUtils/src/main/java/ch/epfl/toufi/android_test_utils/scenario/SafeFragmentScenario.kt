@@ -1,4 +1,4 @@
-package ch.epfl.android_test_utils.scenario
+package ch.epfl.toufi.android_test_utils.scenario
 
 import android.content.ComponentName
 import android.content.Intent
@@ -8,10 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
-import ch.epfl.android_test_utils.scenario.SafeFragmentScenario.Companion.launchInHiltContainer
-import ch.epfl.android_test_utils.scenario.SafeFragmentScenario.Companion.launchInRegularContainer
-import ch.epfl.android_test_utils.ui.activity.EmptyHiltTestActivity
-import ch.epfl.android_test_utils.ui.activity.EmptyRegularTestActivity
+import ch.epfl.toufi.android_test_utils.scenario.SafeFragmentScenario.Companion.launchInHiltContainer
+import ch.epfl.toufi.android_test_utils.scenario.SafeFragmentScenario.Companion.launchInRegularContainer
+import ch.epfl.toufi.android_test_utils.ui.activity.EmptyHiltTestActivity
+import ch.epfl.toufi.android_test_utils.ui.activity.EmptyRegularTestActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 
@@ -30,8 +30,7 @@ class SafeFragmentScenario<F : Fragment> @PublishedApi internal constructor(
 ) {
 
     companion object {
-        @PublishedApi
-        internal const val SAFE_FRAGMENT_TEST_TAG = "Safe_Fragment_Scenario_Tag"
+        const val TEST_TAG = "Safe_Fragment_Scenario_Tag"
 
         /**
          * Launches the fragment in a regular container.
@@ -104,7 +103,7 @@ class SafeFragmentScenario<F : Fragment> @PublishedApi internal constructor(
                 fragment.arguments = fragmentArgs
 
                 activity.supportFragmentManager.beginTransaction().apply {
-                    add(android.R.id.content, fragment, SAFE_FRAGMENT_TEST_TAG)
+                    add(android.R.id.content, fragment, TEST_TAG)
                 }.commitNow()
             }
 
@@ -125,7 +124,7 @@ class SafeFragmentScenario<F : Fragment> @PublishedApi internal constructor(
      */
     fun onFragment(action: (F) -> Unit) {
         scenario.onActivity { activity ->
-            val fragment = activity.supportFragmentManager.findFragmentByTag(SAFE_FRAGMENT_TEST_TAG)
+            val fragment = activity.supportFragmentManager.findFragmentByTag(TEST_TAG)
             requireNotNull(fragment) { "Fragment was already detached." }
 
             @Suppress("UNCHECKED_CAST") action.invoke(fragment as F)

@@ -1,4 +1,4 @@
-package ch.epfl.android_test_utils.ui.view
+package ch.epfl.toufi.android_test_utils.ui.view
 
 import android.view.InputDevice
 import android.view.MotionEvent
