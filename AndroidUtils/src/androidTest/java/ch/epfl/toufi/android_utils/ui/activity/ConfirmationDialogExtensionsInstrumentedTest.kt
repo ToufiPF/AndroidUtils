@@ -5,7 +5,9 @@ import android.content.SharedPreferences
 import androidx.annotation.StringRes
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Root
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
@@ -13,16 +15,16 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import ch.epfl.toufi.android_test_utils.espresso.ViewActions2.clickRelative
 import ch.epfl.toufi.android_utils.BackArrowTestActivity
 import ch.epfl.toufi.android_utils.R
 import ch.epfl.toufi.android_utils.ui.activity.ConfirmationDialogExtensions.showConfirmationDialog
 import ch.epfl.toufi.android_utils.ui.activity.ConfirmationDialogExtensions.showConfirmationDialogWithDoNotShowAgain
 import ch.epfl.toufi.android_utils.ui.activity.ConfirmationDialogExtensions.showYesNoDialogWithDoNotAskAgain
-import junit.framework.AssertionFailedError
+import org.hamcrest.Matchers.any
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -74,6 +76,8 @@ class ConfirmationDialogExtensionsInstrumentedTest {
                 incrementCounter,
             )
         }
+        // clicking outside the dialog should not cancel it
+        onView(isRoot()).perform(clickRelative(0, -100))
 
         onDialogText(android.R.string.untitled).check(matches(isDisplayed()))
         onDialogText(android.R.string.unknownName).check(matches(isDisplayed()))
@@ -82,10 +86,9 @@ class ConfirmationDialogExtensionsInstrumentedTest {
 
         onDialogText(R.string.cancel).perform(click())
 
-        // onDialogText will fail b/c root isDialog does not exist anymore
-        assertThrows(AssertionFailedError::class.java) {
-            onDialogText(android.R.string.untitled).check(matches(isDisplayed()))
-        }
+        // onDialogText would fail b/c root isDialog does not exist anymore
+        onView(withText(android.R.string.untitled)).inRoot(any(Root::class.java))
+            .check(doesNotExist())
         // cancelled, callback shouldn't have been called
         assertEquals(0, counter.get())
     }
@@ -117,6 +120,8 @@ class ConfirmationDialogExtensionsInstrumentedTest {
                 incrementCounter,
             )
         }
+        // clicking outside the dialog should not cancel it
+        onView(isRoot()).perform(clickRelative(0, -100))
 
         onDialogText(android.R.string.untitled).check(matches(isDisplayed()))
         onDialogText(android.R.string.unknownName).check(matches(isDisplayed()))
@@ -126,10 +131,9 @@ class ConfirmationDialogExtensionsInstrumentedTest {
 
         onDialogText(R.string.cancel).perform(click())
 
-        // onDialogText will fail b/c root isDialog does not exist anymore
-        assertThrows(AssertionFailedError::class.java) {
-            onDialogText(android.R.string.untitled).check(matches(isDisplayed()))
-        }
+        // onDialogText would fail b/c root isDialog does not exist anymore
+        onView(withText(android.R.string.untitled)).inRoot(any(Root::class.java))
+            .check(doesNotExist())
         // cancelled, callback shouldn't have been called
         assertEquals(0, counter.get())
     }
@@ -186,8 +190,8 @@ class ConfirmationDialogExtensionsInstrumentedTest {
             )
         }
 
-        onDialogText(R.string.do_not_show_again)
-            .perform(click(), click()).check(matches(not(isChecked())))
+        onDialogText(R.string.do_not_show_again).perform(click(), click())
+            .check(matches(not(isChecked())))
         onDialogText(R.string.confirm).perform(click())
         assertEquals(1, counter.get())
         // on confirm, save in preferences
@@ -215,12 +219,12 @@ class ConfirmationDialogExtensionsInstrumentedTest {
         onDialogText(R.string.no).check(matches(isDisplayed()))
         onDialogText(R.string.do_not_ask_again).check(matches(isDisplayed()))
 
-        onView(isRoot()).perform(click())
+        // clicking outside the dialog should cancel it
+        onView(isRoot()).perform(clickRelative(0, -100))
 
-        // onDialogText will fail b/c root isDialog does not exist anymore
-        assertThrows(AssertionFailedError::class.java) {
-            onDialogText(android.R.string.untitled).check(matches(isDisplayed()))
-        }
+        // onDialogText would fail b/c root isDialog does not exist anymore
+        onView(withText(android.R.string.untitled)).inRoot(any(Root::class.java))
+            .check(doesNotExist())
         // cancelled, callback shouldn't have been called
         assertEquals(0, counter.get())
     }
@@ -237,6 +241,9 @@ class ConfirmationDialogExtensionsInstrumentedTest {
                 incrementOrDecrement,
             )
         }
+
+        // clicking outside the dialog should not cancel it
+        onView(isRoot()).perform(clickRelative(0, -100))
 
         onDialogText(R.string.do_not_ask_again).perform(click()).check(matches(isChecked()))
         onDialogText(R.string.yes).perform(click())
@@ -268,6 +275,9 @@ class ConfirmationDialogExtensionsInstrumentedTest {
                 incrementOrDecrement,
             )
         }
+
+        // clicking outside the dialog should not cancel it
+        onView(isRoot()).perform(clickRelative(0, -100))
 
         onDialogText(R.string.do_not_ask_again).perform(click()).check(matches(isChecked()))
         onDialogText(R.string.no).perform(click())
