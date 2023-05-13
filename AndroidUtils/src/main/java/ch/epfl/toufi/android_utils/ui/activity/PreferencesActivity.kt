@@ -7,53 +7,76 @@ import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceFragmentCompat
 import ch.epfl.toufi.android_utils.R
 
+/**
+ * Base Activity that can inflate [PreferenceFragmentCompat]s.
+ *
+ * Subclasses should override [loadFragment]
+ */
 abstract class PreferencesActivity : BackArrowActivity(R.layout.activity_preferences) {
     companion object {
+        private const val PREFERENCES_FRAGMENT_TAG = "preferences_fragment"
+
         /**
          * Key for the Intent extra to pass a single [String],
          * the name of the [PreferenceFragmentCompat] to create and add.
          */
-        const val PREFERENCES_ID: String = "preferences_activity_fragment_id"
+        const val EXTRA_PREFERENCES_ID: String = "preferences_activity_fragment_id"
 
         /**
          * Key for the Intent extra to pass an [ArrayList] of [String]s,
          * the names of all [PreferenceFragmentCompat] to create and add, in order.
          */
-        const val PREFERENCES_IDS: String = "preferences_activity_fragment_ids"
+        const val EXTRA_PREFERENCES_IDS: String = "preferences_activity_fragment_ids"
 
-        private const val PREFERENCES_FRAGMENT_TAG = "preferences_fragment"
+        /**
+         * Key for the Intent extra containing an eventual title for the [PreferencesActivity]
+         */
+        const val EXTRA_TITLE: String = "preferences_activity_title"
     }
 
     private val fragments = ArrayList<Fragment>()
 
     /**
-     * Returns the [PreferenceFragmentCompat] associated to the given id.
-     * @param preferenceFragmentId String,
+     * Returns the PreferenceFragment associated to the given id.
+     *
+     * Typical [PreferenceFragmentCompat] subclass should look like this:
+     * ```kotlin
+     *  class TestFragment : PreferenceFragmentCompat() {
+     *      override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+     *          preferenceManager.sharedPreferencesName = PREFERENCE_NAME
+     *          setPreferencesFromResource(R.xml.preference_test_fragment, rootKey)
+     *      }
+     *  }
+     * ```
+     * @param fragmentId String, name of the Fragment that should be loaded
      * @return [PreferenceFragmentCompat], or null if the name is not recognized
      */
-    abstract fun loadFragment(preferenceFragmentId: String): PreferenceFragmentCompat?
+    abstract fun loadFragment(fragmentId: String): PreferenceFragmentCompat?
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val preferences = intent.getStringArrayListExtra(PREFERENCES_IDS) ?: listOfNotNull(
-            intent.getStringExtra(PREFERENCES_ID)
-        )
-        populateFragmentContainer(preferences)
+        populateFragmentContainer()
     }
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
-
-        val preferences = intent.getStringArrayListExtra(PREFERENCES_IDS) ?: listOfNotNull(
-            intent.getStringExtra(PREFERENCES_ID)
-        )
-        populateFragmentContainer(preferences)
+        populateFragmentContainer()
     }
 
-    private fun populateFragmentContainer(preferenceNames: List<String>) {
+    private fun populateFragmentContainer() {
+        intent.getStringExtra(EXTRA_TITLE)?.let { title = it }
+
+        val preferences = intent.getStringArrayListExtra(EXTRA_PREFERENCES_IDS) ?: listOfNotNull(
+            intent.getStringExtra(EXTRA_PREFERENCES_ID)
+        )
+
+        if (preferences.isEmpty()) {
+            Log.e(this::class.simpleName, "EXTRA_PREFERENCES_ID(S) not specified")
+            return
+        }
+
         supportFragmentManager.beginTransaction().apply {
-            preferenceNames.forEachIndexed { i, pref ->
+            preferences.forEachIndexed { i, pref ->
                 val fragment = loadFragment(pref)
                 if (fragment != null) {
                     fragments.add(fragment)
@@ -62,7 +85,7 @@ abstract class PreferencesActivity : BackArrowActivity(R.layout.activity_prefere
                 } else {
                     Log.e(
                         this::class.simpleName,
-                        "Name ${preferenceNames[i]} not recognized. Fragment skipped."
+                        "Name ${preferences[i]} not recognized. Fragment skipped."
                     )
                 }
             }

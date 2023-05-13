@@ -10,8 +10,8 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import ch.epfl.toufi.android_utils.PreferencesTestActivity
 import ch.epfl.toufi.android_utils.PreferencesTestActivity.Companion.VALID_PREFIX
-import ch.epfl.toufi.android_utils.ui.activity.PreferencesActivity.Companion.PREFERENCES_ID
-import ch.epfl.toufi.android_utils.ui.activity.PreferencesActivity.Companion.PREFERENCES_IDS
+import ch.epfl.toufi.android_utils.ui.activity.PreferencesActivity.Companion.EXTRA_PREFERENCES_ID
+import ch.epfl.toufi.android_utils.ui.activity.PreferencesActivity.Companion.EXTRA_PREFERENCES_IDS
 import org.junit.Test
 
 class PreferencesActivityInstrumentedTest {
@@ -27,7 +27,7 @@ class PreferencesActivityInstrumentedTest {
     fun singlePreferenceIDIsDisplayed() {
         val text = "${VALID_PREFIX}_1"
         val intent = Intent(getApplicationContext(), PreferencesTestActivity::class.java).apply {
-            putExtra(PREFERENCES_ID, text)
+            putExtra(EXTRA_PREFERENCES_ID, text)
         }
 
         launchActivity(intent) {
@@ -42,7 +42,7 @@ class PreferencesActivityInstrumentedTest {
         val text3 = "${VALID_PREFIX}_3"
         val intent = Intent(getApplicationContext(), PreferencesTestActivity::class.java).apply {
             putExtra(
-                PREFERENCES_IDS, arrayListOf(text1, text2, text3)
+                EXTRA_PREFERENCES_IDS, arrayListOf(text1, text2, text3)
             )
         }
 

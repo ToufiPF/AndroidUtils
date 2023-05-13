@@ -25,7 +25,7 @@ class PreferencesTestActivity : PreferencesActivity() {
         }
     }
 
-    override fun loadFragment(preferenceFragmentId: String): PreferenceFragmentCompat? =
-        if (preferenceFragmentId.startsWith(VALID_PREFIX)) TestFragment(preferenceFragmentId)
+    override fun loadFragment(fragmentId: String): PreferenceFragmentCompat? =
+        if (fragmentId.startsWith(VALID_PREFIX)) TestFragment(fragmentId)
         else null
 }

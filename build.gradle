@@ -9,10 +9,8 @@ plugins {
     id 'com.google.dagger.hilt.android' version "$hilt_version" apply false
 }
 
-task assembleThenMoveAARs(dependsOn: [
-        'AndroidUtils:assembleDebug', 'AndroidUtils:assembleRelease',
-        'AndroidTestUtils:assembleDebug', 'AndroidTestUtils:assembleRelease',
-]) {
+task assembleThenMoveAARs(dependsOn: ['AndroidUtils:assembleDebug', 'AndroidUtils:assembleRelease',
+                                      'AndroidTestUtils:assembleDebug', 'AndroidTestUtils:assembleRelease']) {
     def destinationFolder = file("${project.buildDir}/aar/")
     destinationFolder.mkdirs()
 
@@ -20,7 +18,7 @@ task assembleThenMoveAARs(dependsOn: [
         project.subprojects.forEach { module ->
             copy {
                 from file("${module.buildDir}/outputs/aar/")
-                include "${module.name}-*.aar"
+                include "${module.name}-*.aar", "${module.name}-*.jar"
                 into destinationFolder
             }
         }
