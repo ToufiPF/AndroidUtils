@@ -12,8 +12,9 @@ import androidx.core.content.res.ResourcesCompat.ID_NULL
  * It executes the same action as pressing the physical back arrow of the phone
  * (ie. it calls [onBackPressed]).
  */
-abstract class BackArrowActivity @JvmOverloads constructor(@LayoutRes layoutRes: Int = ID_NULL) :
-    AppCompatActivity(layoutRes) {
+abstract class BackArrowActivity @JvmOverloads constructor(
+    @LayoutRes layoutRes: Int = ID_NULL
+) : AppCompatActivity(layoutRes) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +33,7 @@ abstract class BackArrowActivity @JvmOverloads constructor(@LayoutRes layoutRes:
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> {
+            android.R.id.home, androidx.appcompat.R.id.home -> {
                 onBackPressedDispatcher.onBackPressed()
                 true
             }

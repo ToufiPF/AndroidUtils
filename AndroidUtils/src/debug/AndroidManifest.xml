@@ -1,0 +1,15 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application tools:node="merge">
+
+        <activity
+            android:name=".BackArrowTestActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".PreferencesTestActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat" />
+    </application>
+</manifest>

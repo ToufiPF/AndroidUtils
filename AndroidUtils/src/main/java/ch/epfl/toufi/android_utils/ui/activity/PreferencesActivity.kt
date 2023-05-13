@@ -1,6 +1,7 @@
 package ch.epfl.toufi.android_utils.ui.activity
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceFragmentCompat
@@ -41,6 +42,15 @@ abstract class PreferencesActivity : BackArrowActivity(R.layout.activity_prefere
         populateFragmentContainer(preferences)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+
+        val preferences = intent.getStringArrayListExtra(PREFERENCES_IDS) ?: listOfNotNull(
+            intent.getStringExtra(PREFERENCES_ID)
+        )
+        populateFragmentContainer(preferences)
+    }
+
     private fun populateFragmentContainer(preferenceNames: List<String>) {
         supportFragmentManager.beginTransaction().apply {
             preferenceNames.forEachIndexed { i, pref ->
@@ -58,15 +68,18 @@ abstract class PreferencesActivity : BackArrowActivity(R.layout.activity_prefere
             }
         }.commit()
     }
+    /*
+    TODO check whether the fragments are added twice upon e.g. screen rotation
 
-    override fun onDestroy() {
-        super.onDestroy()
+        override fun onDestroy() {
+            // Remove fragments added in onCreate,
+            // otherwise there are duplicated on e.g. screen rotation
+            supportFragmentManager.beginTransaction().apply {
+                fragments.forEach { remove(it) }
+            }.commit()
+            fragments.clear()
 
-        // Remove fragments added in onCreate,
-        // otherwise there are duplicated on e.g. screen rotation
-        supportFragmentManager.beginTransaction().apply {
-            fragments.forEach { remove(it) }
-        }.commit()
-        fragments.clear()
-    }
+            super.onDestroy()
+        }
+    */
 }

@@ -2,9 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS" />
+    <!-- Permission is always granted when running tests,
+    but it must be declared so that closeNotificationPanel() can compile -->
+    <uses-permission
+        android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS"
+        tools:ignore="ProtectedPermissions" />
+
     <application tools:node="merge">
-        <activity android:name=".ui.activity.EmptyRegularTestActivity" />
-        <activity android:name=".ui.activity.EmptyHiltTestActivity" />
+        <activity
+            android:name="ch.epfl.toufi.android_test_utils.ui.activity.EmptyRegularTestActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name="ch.epfl.toufi.android_test_utils.ui.activity.EmptyHiltTestActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat" />
     </application>
 </manifest>
