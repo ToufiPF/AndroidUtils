@@ -8,6 +8,7 @@
     <string name="no">No</string>
     <string name="continue_">Continue</string>
     <string name="restart_required">Need to restart the app</string>
-    <string name="do_not_ask_again">Do not ask again</string>
     <string name="are_you_sure">Are you sure?</string>
+    <string name="do_not_show_again">Do not show again</string>
+    <string name="do_not_ask_again">Do not ask again</string>
 </resources>

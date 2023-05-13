@@ -16,9 +16,9 @@
         android:textSize="16sp" />
 
     <CheckBox
-        android:id="@+id/checkbox_do_not_ask_again"
+        android:id="@+id/checkbox_do_not_show_again"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="14dp"
-        android:text="@string/do_not_ask_again" />
+        android:text="@string/do_not_show_again" />
 </LinearLayout>
