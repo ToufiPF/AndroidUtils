@@ -10,7 +10,8 @@ import ch.epfl.toufi.android_utils.R
 /**
  * Base Activity that can inflate [PreferenceFragmentCompat]s.
  *
- * Subclasses should override [loadFragment]
+ * Subclasses should override [loadFragment] to return [PreferenceFragmentCompat] implementations
+ * depending on the passed id.
  */
 abstract class PreferencesActivity : BackArrowActivity(R.layout.activity_preferences) {
     companion object {
