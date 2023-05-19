@@ -6,6 +6,7 @@ import android.view.MenuItem
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat.ID_NULL
+import ch.epfl.toufi.android_utils.permissions.MockPermissionsActivity
 
 /**
  * An activity that shows a back arrow in the action bar.
@@ -14,7 +15,7 @@ import androidx.core.content.res.ResourcesCompat.ID_NULL
  */
 abstract class BackArrowActivity @JvmOverloads constructor(
     @LayoutRes layoutRes: Int = ID_NULL
-) : AppCompatActivity(layoutRes) {
+) : MockPermissionsActivity(layoutRes) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
