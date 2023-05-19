@@ -6,14 +6,14 @@ plugins {
 }
 
 android {
-    namespace 'ch.epfl.android_test_utils'
+    namespace 'ch.epfl.toufi.android_test_utils'
     compileSdk 33
 
     defaultConfig {
         minSdk 24
         targetSdk 33
 
-        testInstrumentationRunner "ch.epfl.android_test_utils.HiltTestRunner"
+        testInstrumentationRunner "ch.epfl.toufi.android_test_utils.HiltTestRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
