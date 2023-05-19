@@ -77,7 +77,7 @@ class ConfirmationDialogExtensionsInstrumentedTest {
             )
         }
         // clicking outside the dialog should not cancel it
-        onView(isRoot()).perform(clickRelative(0, -100))
+        onView(isRoot()).inRoot(isDialog()).perform(clickRelative(0, -100))
 
         onDialogText(android.R.string.untitled).check(matches(isDisplayed()))
         onDialogText(android.R.string.unknownName).check(matches(isDisplayed()))
@@ -121,7 +121,7 @@ class ConfirmationDialogExtensionsInstrumentedTest {
             )
         }
         // clicking outside the dialog should not cancel it
-        onView(isRoot()).perform(clickRelative(0, -100))
+        onView(isRoot()).inRoot(isDialog()).perform(clickRelative(0, -100))
 
         onDialogText(android.R.string.untitled).check(matches(isDisplayed()))
         onDialogText(android.R.string.unknownName).check(matches(isDisplayed()))
@@ -220,7 +220,7 @@ class ConfirmationDialogExtensionsInstrumentedTest {
         onDialogText(R.string.do_not_ask_again).check(matches(isDisplayed()))
 
         // clicking outside the dialog should cancel it
-        onView(isRoot()).perform(clickRelative(0, -100))
+        onView(isRoot()).inRoot(isDialog()).perform(clickRelative(0, -100))
 
         // onDialogText would fail b/c root isDialog does not exist anymore
         onView(withText(android.R.string.untitled)).inRoot(any(Root::class.java))
@@ -243,7 +243,7 @@ class ConfirmationDialogExtensionsInstrumentedTest {
         }
 
         // clicking outside the dialog should not cancel it
-        onView(isRoot()).perform(clickRelative(0, -100))
+        onView(isRoot()).inRoot(isDialog()).perform(clickRelative(0, -100))
 
         onDialogText(R.string.do_not_ask_again).perform(click()).check(matches(isChecked()))
         onDialogText(R.string.yes).perform(click())
@@ -277,7 +277,7 @@ class ConfirmationDialogExtensionsInstrumentedTest {
         }
 
         // clicking outside the dialog should not cancel it
-        onView(isRoot()).perform(clickRelative(0, -100))
+        onView(isRoot()).inRoot(isDialog()).perform(clickRelative(0, -100))
 
         onDialogText(R.string.do_not_ask_again).perform(click()).check(matches(isChecked()))
         onDialogText(R.string.no).perform(click())
