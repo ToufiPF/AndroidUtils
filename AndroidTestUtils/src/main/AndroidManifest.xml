@@ -8,9 +8,9 @@
         android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS"
         tools:ignore="ProtectedPermissions" />
 
-    <application tools:node="merge">
+    <application>
         <activity
-            android:name=".ui.activity.EmptyRegularTestActivity"
+            android:name="ch.epfl.toufi.android_test_utils.ui.activity.EmptyRegularTestActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat" />
         <activity

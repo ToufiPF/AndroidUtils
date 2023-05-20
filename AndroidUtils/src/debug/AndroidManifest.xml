@@ -1,8 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <application tools:node="merge">
-
+    <application>
         <activity
             android:name=".BackArrowTestActivity"
             android:exported="false"
